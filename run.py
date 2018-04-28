@@ -13,7 +13,7 @@ adds = [x for x in links if x.get('href') != None and '/en/jobs' in x.get('href'
 
 title_and_uid_with_id = [(x, # index
                          unicodedata.normalize('NFKD', adds[x].div.div.div.nextSibling.string).encode('ascii','ignore'), # Title
-                         unicodedata.normalize('NFKD', adds[x]['href'].split('/')[-1])).encode('ascii','ignore') # UID
+                         adds[x]['href'].split('/')[-1]) # UID
                          for x in range(len(adds))]
 
 conn = sqlite3.connect('heyjobs.db')
