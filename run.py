@@ -11,18 +11,21 @@ soup = BeautifulSoup(urllib2.urlopen(source).read())
 links = soup.findAll('a')
 adds = [x for x in links if x.get('href') != None and '/en/jobs' in x.get('href')]
 
-title_and_uid_with_id = [(x,
-                         unicodedata.normalize('NFKD', adds[x].div.div.div.nextSibling.string).encode('ascii','ignore'),
-                         adds[x]['href'].split('/')[-1]) 
+title_and_uid_with_id = [(x, # index
+                         unicodedata.normalize('NFKD', adds[x].div.div.div.nextSibling.string).encode('ascii','ignore'), # Title
+                         adds[x]['href'].split('/')[-1]) # UID
                          for x in range(len(adds))]
 
-conn = sqlite3.connect('/Users/elise/Desktop/database.db')
+conn = sqlite3.connect('heyjobs.db')
+
+
 cur = conn.cursor()
-cur.execute('CREATE TABLE heyjobs (id INTEGER, uid STRING, title STRING);')
+cur.execute('CREATE TABLE IF NOT EXISTS heyjobs (id INTEGER, uid STRING, title STRING);')
 
 for item in title_and_uid_with_id:
     cur.execute('INSERT INTO heyjobs VALUES (?, ?, ?)', item)
 
 cur.execute('SELECT * FROM heyjobs')
 results = cur.fetchall()
-print results
+
+print(results)
