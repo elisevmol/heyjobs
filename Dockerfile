@@ -1,8 +1,7 @@
-FROM alpine
+FROM python:2.7
 
-RUN apk add --update python py-pip
-RUN pip install -r requirements.txt
+RUN pip install BeautifulSoup
 
-COPY simpleapp.py /src/simpleapp.py
+COPY run.py run.py
 
-EXPOSE  5432
+CMD [ "python", "run.py" ]
